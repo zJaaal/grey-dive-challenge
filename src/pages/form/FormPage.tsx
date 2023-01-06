@@ -26,6 +26,8 @@ const FormPage = () => {
       }}
     >
       {pointer < 0 && <WelcomeCard callback={increment} />}
+
+      {/* try to pass here the component instead of the pointer and create another component for the last one */}
       {pointer >= 0 && (
         <ItemContainer pointer={pointer} decrement={decrement} increment={increment} />
       )}
