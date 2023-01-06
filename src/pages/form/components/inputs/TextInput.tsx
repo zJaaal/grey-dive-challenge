@@ -1,5 +1,5 @@
 import { FormControl, FormHelperText, SxProps, TextField, Typography } from "@mui/material";
-import React, { ChangeEvent, RefObject, useContext, useState } from "react";
+import React, { RefObject, useContext, useState } from "react";
 import { ValidationContext } from "../../../../context/validation/ValidationContext";
 import { TextInputProps } from "./types";
 
