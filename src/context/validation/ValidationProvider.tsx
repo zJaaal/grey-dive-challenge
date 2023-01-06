@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { ValidationContext } from "./ValidationContext";
-import { data } from "../../data";
+import { rawData } from "../../data";
+
 import { ValidateResponse } from "./types";
 import { saveOnDatabase } from "../../firebase";
 import { formSchemas } from "./utils/formSchemas";
@@ -50,7 +51,7 @@ const ValidationProvider: FC<any> = ({ children }) => {
 
   useEffect(() => {
     let formValues: any = {};
-    data.forEach((item) => {
+    rawData.forEach((item) => {
       if (item.name) {
         formValues[item.name] = "";
         if (item.type == "date") formValues[item.name] = null;

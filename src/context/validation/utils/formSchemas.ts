@@ -1,4 +1,4 @@
-import { data } from "../../../data";
+import { rawData } from "../../../data";
 import parseDataToSchema from "./parseDataToSchema";
 
-export const formSchemas = parseDataToSchema(data);
+export const formSchemas = parseDataToSchema(rawData);
