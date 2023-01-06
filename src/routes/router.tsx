@@ -8,7 +8,7 @@ const router = createBrowserRouter([
   {
     element: (
       <ValidationProvider>
-        <FormPage />,
+        <FormPage />
       </ValidationProvider>
     ),
     path: routes.main,
