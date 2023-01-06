@@ -1,49 +1,68 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { ValidationContext } from "./ValidationContext";
 import { data } from "../../data";
-import parseDataToSchema from "./utils/parseDataToSchema";
 import { ValidateResponse } from "./types";
+import { saveOnDatabase } from "../../firebase";
+import { formSchemas } from "./utils/formSchemas";
 
 const ValidationProvider: FC<any> = ({ children }) => {
   const [formValues, setFormValues] = useState<any>();
-  const formSchemas = useRef<any>(parseDataToSchema(data));
 
-  const handleFormValueChange = (key: string, value: string | Date | boolean) => {
+  const validateFormValue = (key: string, value: string | Date | boolean): ValidateResponse => {
     let response: ValidateResponse = {
       isValid: true,
     };
 
     try {
-      formSchemas.current[key].validateSync(value);
+      formSchemas[key].validateSync(value);
     } catch (error) {
       response = {
         isValid: false,
         errorMessage: (error as Error).message,
       };
-    } finally {
-      setFormValues((prev: any) => ({
-        ...prev,
-        [key]: value,
-      }));
     }
+    return response;
+  };
+
+  const handleFormValueChange = (key: string, value: string | Date | boolean): ValidateResponse => {
+    let response = validateFormValue(key, value);
+
+    setFormValues((prev: any) => ({
+      ...prev,
+      [key]: value,
+    }));
 
     return response;
+  };
+
+  const saveAnswers = () => {
+    if (Object.keys(formValues).every((key) => validateFormValue(key, formValues[key]).isValid)) {
+      saveOnDatabase(formValues)
+        .then((uid) => localStorage.setItem("uid", uid))
+        .catch((_) => console.log("Something went wrong"));
+
+      return true;
+    } else {
+      console.log("Some values are invalid");
+      return false;
+    }
   };
 
   useEffect(() => {
     let formValues: any = {};
     data.forEach((item) => {
-      formValues[item.name!] = "";
-
-      if (item.type == "date") formValues[item.name!] = null;
-      if (item.type == "checkbox") formValues[item.name!] = false;
+      if (item.name) {
+        formValues[item.name] = "";
+        if (item.type == "date") formValues[item.name] = null;
+        if (item.type == "checkbox") formValues[item.name] = false;
+      }
     });
 
     setFormValues(formValues);
   }, []);
 
   return (
-    <ValidationContext.Provider value={{ formValues, handleFormValueChange }}>
+    <ValidationContext.Provider value={{ formValues, handleFormValueChange, saveAnswers }}>
       {children}
     </ValidationContext.Provider>
   );
