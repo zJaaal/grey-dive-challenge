@@ -1,3 +1,6 @@
 import { createContext } from "react";
 
-export const ValidationContext = createContext<any | undefined>(undefined);
+export const ValidationContext = createContext<any>({
+  formValues: {},
+  handleFormValueChange: () => {},
+});
