@@ -2,6 +2,10 @@ import { FormControl, FormHelperText, SxProps, TextField, Typography } from "@mu
 import { DatePicker } from "@mui/x-date-pickers";
 import { Moment } from "moment";
 import * as moment from "moment";
+import { LocalizationProvider, esES } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import "moment/locale/es";
+
 import React, { RefObject, useContext, useState } from "react";
 import { ValidationContext } from "../../../../context/validation/ValidationContext";
 import { DateInputProps } from "./types";
@@ -10,7 +14,9 @@ const DateInput = React.forwardRef<RefObject<HTMLInputElement>, DateInputProps>(
   const { handleFormValueChange } = useContext(ValidationContext);
   const [error, setError] = useState<string | null>(null);
 
-  let handleDateChange = (value: Moment) => {
+  let handleDateChange = (value: Moment | null) => {
+    if (value == null) return setError("Este campo es requerido");
+
     let { isValid, errorMessage } = handleFormValueChange(props.name!, value.toDate());
 
     if (!isValid) setError(errorMessage!);
@@ -31,23 +37,29 @@ const DateInput = React.forwardRef<RefObject<HTMLInputElement>, DateInputProps>(
   };
 
   return (
-    <DatePicker
-      {...props}
-      value={props.value}
-      onChange={(value) => handleDateChange(value!)}
-      maxDate={moment()}
-      renderInput={(params) => (
-        <FormControl {...props} sx={formStyle}>
-          <Typography variant="h5" sx={{ marginBottom: "8.4px" }} gutterBottom>
-            {params.label} <span style={{ color: "red" }}>*</span>
-          </Typography>
-          <TextField inputRef={ref} {...params} sx={inputStyle} label="" variant="standard" />
-          <FormHelperText sx={{ color: "red", marginTop: "10px" }}>
-            {error || ""}
-          </FormHelperText>{" "}
-        </FormControl>
-      )}
-    />
+    <LocalizationProvider
+      dateAdapter={AdapterMoment}
+      adapterLocale="es"
+      localeText={esES.components.MuiLocalizationProvider.defaultProps.localeText}
+    >
+      <DatePicker
+        {...props}
+        value={props.value}
+        onChange={(value) => handleDateChange(value)}
+        maxDate={moment()}
+        renderInput={(params) => (
+          <FormControl {...props} sx={formStyle}>
+            <Typography variant="h5" sx={{ marginBottom: "8.4px" }} gutterBottom>
+              {params.label} <span style={{ color: "red" }}>*</span>
+            </Typography>
+            <TextField inputRef={ref} {...params} sx={inputStyle} label="" variant="standard" />
+            <FormHelperText sx={{ color: "red", marginTop: "10px" }}>
+              {error || ""}
+            </FormHelperText>{" "}
+          </FormControl>
+        )}
+      />
+    </LocalizationProvider>
   );
 });
 
