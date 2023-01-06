@@ -9,6 +9,7 @@ import "moment/locale/es";
 import React, { RefObject, useContext, useState } from "react";
 import { ValidationContext } from "../../../../context/validation/ValidationContext";
 import { DateInputProps } from "./types";
+import { responsiveTypography } from "../../../../theme/mainTheme";
 
 const DateInput = React.forwardRef<RefObject<HTMLInputElement>, DateInputProps>((props, ref) => {
   const { handleFormValueChange } = useContext(ValidationContext);
@@ -25,15 +26,17 @@ const DateInput = React.forwardRef<RefObject<HTMLInputElement>, DateInputProps>(
 
   let inputStyle: SxProps = {
     height: "24px",
-    width: "50%",
+    width: "100%",
+    fontColor: "white",
   };
 
   let formStyle: SxProps = {
-    width: "100vw",
+    width: "100%",
     display: "flex",
-    alignContent: "center",
-    flexWrap: "wrap",
-    marginBottom: "40px",
+    alignItems: "start",
+    justifyContent: "center",
+    flexDirection: "column",
+    marginBottom: "20px",
   };
 
   return (
@@ -44,12 +47,15 @@ const DateInput = React.forwardRef<RefObject<HTMLInputElement>, DateInputProps>(
     >
       <DatePicker
         {...props}
-        value={props.value}
         onChange={(value) => handleDateChange(value)}
         maxDate={moment()}
         renderInput={(params) => (
           <FormControl {...props} sx={formStyle}>
-            <Typography variant="h5" sx={{ marginBottom: "8.4px" }} gutterBottom>
+            <Typography
+              variant="h5"
+              sx={{ marginBottom: "20px", ...responsiveTypography }}
+              gutterBottom
+            >
               {params.label} <span style={{ color: "red" }}>*</span>
             </Typography>
             <TextField inputRef={ref} {...params} sx={inputStyle} label="" variant="standard" />

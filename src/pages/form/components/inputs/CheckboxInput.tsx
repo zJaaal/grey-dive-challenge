@@ -23,11 +23,12 @@ const CheckboxInput = React.forwardRef<RefObject<HTMLInputElement>, CheckboxInpu
     };
 
     let formStyle: SxProps = {
-      width: "50vw",
+      width: "100%",
       display: "flex",
-      alignContent: "left",
-      flexWrap: "wrap",
-      marginBottom: "40px",
+      alignItems: "start",
+      justifyContent: "center",
+      flexDirection: "column",
+      marginBottom: "20px",
     };
 
     return (
@@ -35,12 +36,12 @@ const CheckboxInput = React.forwardRef<RefObject<HTMLInputElement>, CheckboxInpu
         <FormControlLabel
           inputRef={ref}
           label={
-            <Typography variant="body1" fontSize={"18px"}>
+            <Typography variant="body1" fontSize={"14px"}>
               {props.label}
             </Typography>
           }
           onChange={(e, checked) => handleCheckboxChange(e, checked)}
-          control={<Checkbox value={props.value} />}
+          control={<Checkbox value={props.value} size={"small"} />}
         />
         <FormHelperText sx={{ color: "red" }}>{error}</FormHelperText>
       </FormControl>

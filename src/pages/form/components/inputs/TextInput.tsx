@@ -1,6 +1,7 @@
 import { FormControl, FormHelperText, SxProps, TextField, Typography } from "@mui/material";
 import React, { RefObject, useContext, useState } from "react";
 import { ValidationContext } from "../../../../context/validation/ValidationContext";
+import { responsiveTypography } from "../../../../theme/mainTheme";
 import { TextInputProps } from "./types";
 
 const TextInput = React.forwardRef<RefObject<HTMLInputElement>, TextInputProps>((props, ref) => {
@@ -18,20 +19,22 @@ const TextInput = React.forwardRef<RefObject<HTMLInputElement>, TextInputProps>(
 
   let inputStyle: SxProps = {
     height: "24px",
-    width: "50%",
+    width: "100%",
+    fontColor: "white",
   };
 
   let formStyle: SxProps = {
-    width: "100vw",
+    width: "100%",
     display: "flex",
-    alignContent: "center",
-    flexWrap: "wrap",
-    marginBottom: "40px",
+    alignItems: "start",
+    justifyContent: "center",
+    flexDirection: "column",
+    marginBottom: "20px",
   };
 
   return (
     <FormControl {...props} sx={formStyle}>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" sx={{ marginBottom: "20px", ...responsiveTypography }} gutterBottom>
         {props.label} <span style={{ color: "red" }}>*</span>
       </Typography>
       <TextField
@@ -40,8 +43,11 @@ const TextInput = React.forwardRef<RefObject<HTMLInputElement>, TextInputProps>(
         onChange={(e) => handleTextChange(e.target.value)}
         label=""
         sx={inputStyle}
+        autoComplete={"off"}
       />
-      <FormHelperText sx={{ color: "red", marginTop: "10px" }}>{error || ""}</FormHelperText>
+      <FormHelperText sx={{ color: "red", marginTop: "10px", fontSize: "14px" }}>
+        {error || ""}
+      </FormHelperText>
     </FormControl>
   );
 });
