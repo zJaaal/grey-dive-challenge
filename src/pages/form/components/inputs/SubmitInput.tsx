@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   ButtonProps,
   FormControl,
@@ -12,25 +13,19 @@ import React, { RefObject } from "react";
 
 const SubmitInput = React.forwardRef<RefObject<HTMLButtonElement>, ButtonProps & { label: string }>(
   (props, ref) => {
-    let inputStyle: SxProps = {
-      height: "24px",
-      width: "50%",
-    };
-
-    let formStyle: SxProps = {
+    let boxStyle: SxProps = {
       width: "50vw",
       display: "flex",
-      alignContent: "end",
-      flexWrap: "wrap",
+      justifyContent: "end",
       marginBottom: "40px",
     };
 
     return (
-      <FormControl sx={formStyle}>
+      <Box sx={boxStyle} ref={ref}>
         <Button type="submit" variant="contained">
           {props.label}
         </Button>
-      </FormControl>
+      </Box>
     );
   }
 );
