@@ -30,7 +30,7 @@ async function saveOnDatabase(data: any) {
 }
 async function getResponses(uid: string) {
   try {
-    const data = await getDoc(doc(db, `responses/{uid}`));
+    const data = await getDoc(doc(db, `responses/${uid}`));
     console.log("Document written with ID: ", data);
   } catch (e) {
     console.error("Error adding document: ", e);
