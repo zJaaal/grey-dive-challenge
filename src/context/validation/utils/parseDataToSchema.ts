@@ -37,7 +37,10 @@ const parseDataToSchema = (data: DataType) => {
         break;
       }
       case "date": {
-        schema = yup.date().required("Este campo es requerido");
+        schema = yup
+          .date()
+          .max(new Date(), "Por favor, ingrese una fecha valida")
+          .required("Este campo es requerido");
         break;
       }
       case "checkbox": {
