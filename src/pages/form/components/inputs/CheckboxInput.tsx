@@ -6,11 +6,22 @@ import {
   SxProps,
   Typography,
 } from "@mui/material";
-import React, { RefObject } from "react";
+import React, { RefObject, SyntheticEvent, useContext, useState } from "react";
+import { ValidationContext } from "../../../../context/validation/ValidationContext";
 import { CheckboxInputProps } from "./types";
 
 const CheckboxInput = React.forwardRef<RefObject<HTMLInputElement>, CheckboxInputProps>(
   (props, ref) => {
+    const { handleFormValueChange } = useContext(ValidationContext);
+    const [error, setError] = useState<string | null>(null);
+
+    let handleCheckboxChange = (_: SyntheticEvent<Element, Event>, checked: boolean) => {
+      let { isValid, errorMessage } = handleFormValueChange(props.name!, checked);
+
+      if (!isValid) setError(errorMessage!);
+      else setError(null);
+    };
+
     let formStyle: SxProps = {
       width: "50vw",
       display: "flex",
@@ -28,9 +39,10 @@ const CheckboxInput = React.forwardRef<RefObject<HTMLInputElement>, CheckboxInpu
               {props.label}
             </Typography>
           }
-          control={<Checkbox />}
+          onChange={(e, checked) => handleCheckboxChange(e, checked)}
+          control={<Checkbox value={props.value} />}
         />
-        <FormHelperText></FormHelperText>
+        <FormHelperText sx={{ color: "red" }}>{error}</FormHelperText>
       </FormControl>
     );
   }
