@@ -28,7 +28,6 @@ const CheckboxInput = React.forwardRef<RefObject<HTMLInputElement>, CheckboxInpu
       alignItems: "start",
       justifyContent: "center",
       flexDirection: "column",
-      marginBottom: "20px",
     };
 
     return (
