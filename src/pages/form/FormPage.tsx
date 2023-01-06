@@ -1,10 +1,17 @@
 import { Grid } from "@mui/material";
-import { useContext } from "react";
-import { ValidationContext } from "../../context/validation/ValidationContext";
-import { data } from "../../data";
+import { useState } from "react";
+import ItemContainer from "./components/items/ItemContainer";
+import WelcomeCard from "./components/welcome/WelcomeCard";
 import { InputComponents } from "./utils";
 const FormPage = () => {
-  const { formValues } = useContext(ValidationContext);
+  const [pointer, setPointer] = useState(-1);
+
+  const increment = () => {
+    setPointer((prev) => ++prev);
+  };
+  const decrement = () => {
+    setPointer((prev) => --prev);
+  };
 
   return (
     <Grid
@@ -14,21 +21,14 @@ const FormPage = () => {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
+        background:
+          "linear-gradient(to right, #4A00E0, #8E2DE2)" /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
       }}
     >
-      {formValues &&
-        data.map((item) => {
-          //If undefined then we don't show anything so we can just fallback to nothing
-          let Input = InputComponents[item.type!];
-
-          return (
-            Input && (
-              <div key={item.label}>
-                <Input {...item} value={formValues[item.name!]} variant="standard" />
-              </div>
-            )
-          );
-        })}
+      {pointer < 0 && <WelcomeCard callback={increment} />}
+      {pointer >= 0 && (
+        <ItemContainer pointer={pointer} decrement={decrement} increment={increment} />
+      )}
     </Grid>
   );
 };
