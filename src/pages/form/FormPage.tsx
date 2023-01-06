@@ -1,25 +1,29 @@
-import React, { useRef } from "react";
-import data from "../../../public/db.json";
-import TextInput from "./components/inputs/TextInput";
+import { Grid } from "@mui/material";
+import data from "../../db.json";
+import { InputTypes } from "./utils";
 const FormPage = () => {
   return (
-    <div>
-      <TextInput variant="standard" />
-      {data.items.map((item) => (
-        <div key={item.label}>
-          <div>{item.type}</div>
-          <div>{item.label}</div>
-          <div>{item.name}</div>
-          <div>{item.required}</div>
-          {item.options &&
-            item.options.map((item, j) => (
-              <div key={j}>
-                <div>{item.label}</div> <div>{item.value}</div>
-              </div>
-            ))}
-        </div>
-      ))}
-    </div>
+    <Grid
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+      }}
+    >
+      {data.items.map((item) => {
+        let Input = InputTypes[item.type];
+
+        return (
+          Input && (
+            <div key={item.label}>
+              <Input {...item} variant="standard" />
+            </div>
+          )
+        );
+      })}
+    </Grid>
   );
 };
 
