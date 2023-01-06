@@ -1,7 +1,11 @@
 import { Grid } from "@mui/material";
-import data from "../../db.json";
-import { InputTypes } from "./utils";
+import { useContext } from "react";
+import { ValidationContext } from "../../context/validation/ValidationContext";
+import { data } from "../../data";
+import { InputComponents } from "./utils";
 const FormPage = () => {
+  const { formValues } = useContext(ValidationContext);
+
   return (
     <Grid
       sx={{
@@ -12,17 +16,19 @@ const FormPage = () => {
         minHeight: "100vh",
       }}
     >
-      {data.items.map((item) => {
-        let Input = InputTypes[item.type];
+      {formValues &&
+        data.map((item) => {
+          //If undefined then we don't show anything so we can just fallback to nothing
+          let Input = InputComponents[item.type!];
 
-        return (
-          Input && (
-            <div key={item.label}>
-              <Input {...item} variant="standard" />
-            </div>
-          )
-        );
-      })}
+          return (
+            Input && (
+              <div key={item.label}>
+                <Input {...item} value={formValues[item.name!]} variant="standard" />
+              </div>
+            )
+          );
+        })}
     </Grid>
   );
 };
