@@ -1,5 +1,7 @@
+import React, { ReactNode } from "react";
+import { InputType, SelectType } from "../../../../data";
+
 export type ItemContainerProps = {
-  pointer: number;
-  increment: () => void;
-  decrement: () => void;
+  Item: () => React.ReactElement<any, string | React.JSXElementConstructor<any>> | undefined;
+  Action: () => React.ReactElement<any, string | React.JSXElementConstructor<any>> | undefined;
 };
