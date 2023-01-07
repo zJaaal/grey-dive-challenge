@@ -1,7 +1,7 @@
 import { FormControl, FormHelperText, SxProps, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Moment } from "moment";
-import * as moment from "moment";
+import moment from "moment";
 import { LocalizationProvider, esES } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import "moment/locale/es";
