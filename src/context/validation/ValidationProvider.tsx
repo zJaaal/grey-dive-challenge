@@ -39,7 +39,7 @@ const ValidationProvider: FC<any> = ({ children }) => {
         formValues[key] = formValues[key].toDate().toISOString();
     });
 
-    if (keys.every((key) => validateFormValue(key))) {
+    if (keys.reduce((acc, key) => (acc += Number(validateFormValue(key))), 0) == keys.length) {
       saveOnDatabase(formValues)
         .then((uid) => localStorage.setItem("uid", uid))
         .catch((_) => console.log("Something went wrong"));
@@ -47,7 +47,6 @@ const ValidationProvider: FC<any> = ({ children }) => {
       return true;
     } else {
       console.log("Some values are invalid");
-      console.log(formValues);
       return false;
     }
   };
