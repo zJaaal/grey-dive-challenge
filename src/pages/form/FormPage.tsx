@@ -72,14 +72,20 @@ const FormPage = () => {
             </FadeInOut>
           )}
           Action={() => (
-            <>
+            <FadeInOut
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
               <Button size="medium" variant="outlined" onClick={decrement}>
                 Atras
               </Button>
               <Button size="medium" variant="contained" onClick={increment}>
                 Continuar
               </Button>
-            </>
+            </FadeInOut>
           )}
         />
       )}
