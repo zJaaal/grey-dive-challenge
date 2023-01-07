@@ -12,16 +12,10 @@ import { DateInputProps } from "./types";
 import { responsiveTypography } from "../../../../theme/mainTheme";
 
 const DateInput = React.forwardRef<RefObject<HTMLInputElement>, DateInputProps>((props, ref) => {
-  const { handleFormValueChange } = useContext(ValidationContext);
-  const [error, setError] = useState<string | null>(null);
+  const { handleFormValueChange, formErrors } = useContext(ValidationContext);
 
-  let handleDateChange = (value: Moment | null) => {
-    if (value == null) return setError("Este campo es requerido");
-
-    let { isValid, errorMessage } = handleFormValueChange(props.name!, value.toDate());
-
-    if (!isValid) setError(errorMessage!);
-    else setError(null);
+  let handleDateChange = (value: Moment | string) => {
+    handleFormValueChange(props.name!, moment.isMoment(value) ? value.toDate() : value);
   };
 
   let inputStyle: SxProps = {
@@ -40,14 +34,10 @@ const DateInput = React.forwardRef<RefObject<HTMLInputElement>, DateInputProps>(
   };
 
   return (
-    <LocalizationProvider
-      dateAdapter={AdapterMoment}
-      adapterLocale="es"
-      localeText={esES.components.MuiLocalizationProvider.defaultProps.localeText}
-    >
+    <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale="es">
       <DatePicker
         {...props}
-        onChange={(value) => handleDateChange(value)}
+        onChange={(value) => handleDateChange(value || "")}
         maxDate={moment()}
         renderInput={(params) => (
           <FormControl {...props} sx={formStyle}>
@@ -60,7 +50,7 @@ const DateInput = React.forwardRef<RefObject<HTMLInputElement>, DateInputProps>(
             </Typography>
             <TextField inputRef={ref} {...params} sx={inputStyle} label="" variant="standard" />
             <FormHelperText sx={{ color: "red", marginTop: "10px" }}>
-              {error || ""}
+              {formErrors[props.name!]}
             </FormHelperText>{" "}
           </FormControl>
         )}

@@ -5,16 +5,12 @@ import { responsiveTypography } from "../../../../theme/mainTheme";
 import { TextInputProps } from "./types";
 
 const TextInput = React.forwardRef<RefObject<HTMLInputElement>, TextInputProps>((props, ref) => {
-  const { handleFormValueChange } = useContext(ValidationContext);
-  const [error, setError] = useState<string | null>(null);
+  const { handleFormValueChange, formErrors } = useContext(ValidationContext);
 
   let handleTextChange = (value: string) => {
     if (value.length == 1 && value == " ") value = value.trim();
 
-    let { isValid, errorMessage } = handleFormValueChange(props.name!, value);
-
-    if (!isValid) setError(errorMessage!);
-    else setError(null);
+    handleFormValueChange(props.name!, value);
   };
 
   let inputStyle: SxProps = {
@@ -46,7 +42,7 @@ const TextInput = React.forwardRef<RefObject<HTMLInputElement>, TextInputProps>(
         autoComplete={"off"}
       />
       <FormHelperText sx={{ color: "red", marginTop: "10px", fontSize: "14px" }}>
-        {error || ""}
+        {formErrors[props.name!]}
       </FormHelperText>
     </FormControl>
   );

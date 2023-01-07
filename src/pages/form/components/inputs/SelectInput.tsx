@@ -1,19 +1,15 @@
 import { FormControl, FormHelperText, MenuItem, Select, SxProps, Typography } from "@mui/material";
-import React, { RefObject, useContext, useState } from "react";
+import React, { RefObject, useContext } from "react";
 import { ValidationContext } from "../../../../context/validation/ValidationContext";
 import { responsiveTypography } from "../../../../theme/mainTheme";
 import { SelectInputProps } from "./types";
 
 const SelectCustomInput = React.forwardRef<RefObject<HTMLInputElement>, SelectInputProps>(
   (props, ref) => {
-    const { handleFormValueChange } = useContext(ValidationContext);
-    const [error, setError] = useState<string | null>(null);
+    const { handleFormValueChange, formErrors } = useContext(ValidationContext);
 
     let handleSelectChange = (value: string) => {
-      let { isValid, errorMessage } = handleFormValueChange(props.name!, value);
-
-      if (!isValid) setError(errorMessage!);
-      else setError(null);
+      handleFormValueChange(props.name!, value);
     };
     let inputStyle: SxProps = {
       height: "24px",
@@ -61,7 +57,9 @@ const SelectCustomInput = React.forwardRef<RefObject<HTMLInputElement>, SelectIn
             </MenuItem>
           ))}
         </Select>
-        <FormHelperText sx={{ color: "red", marginTop: "10px" }}>{error || ""}</FormHelperText>{" "}
+        <FormHelperText sx={{ color: "red", marginTop: "10px" }}>
+          {formErrors[props.name!]}
+        </FormHelperText>{" "}
       </FormControl>
     );
   }

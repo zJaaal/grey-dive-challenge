@@ -12,14 +12,10 @@ import { CheckboxInputProps } from "./types";
 
 const CheckboxInput = React.forwardRef<RefObject<HTMLInputElement>, CheckboxInputProps>(
   (props, ref) => {
-    const { handleFormValueChange } = useContext(ValidationContext);
-    const [error, setError] = useState<string | null>(null);
+    const { handleFormValueChange, formErrors } = useContext(ValidationContext);
 
     let handleCheckboxChange = (_: SyntheticEvent<Element, Event>, checked: boolean) => {
-      let { isValid, errorMessage } = handleFormValueChange(props.name!, checked);
-
-      if (!isValid) setError(errorMessage!);
-      else setError(null);
+      handleFormValueChange(props.name!, checked);
     };
 
     let formStyle: SxProps = {
@@ -42,7 +38,7 @@ const CheckboxInput = React.forwardRef<RefObject<HTMLInputElement>, CheckboxInpu
           onChange={(e, checked) => handleCheckboxChange(e, checked)}
           control={<Checkbox value={props.value} size={"small"} />}
         />
-        <FormHelperText sx={{ color: "red" }}>{error}</FormHelperText>
+        <FormHelperText sx={{ color: "red" }}>{formErrors[props.name!]}</FormHelperText>
       </FormControl>
     );
   }
