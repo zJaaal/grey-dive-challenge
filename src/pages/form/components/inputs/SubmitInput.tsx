@@ -12,7 +12,6 @@ const SubmitInput = React.forwardRef<
     width: "inherit",
     display: "flex",
     justifyContent: "end",
-    marginBottom: "10px",
   };
 
   return (

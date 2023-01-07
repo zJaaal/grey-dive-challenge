@@ -2,6 +2,7 @@ import { Button, Grid } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { ValidationContext } from "../../context/validation/ValidationContext";
 import { data, InputType, lastComponent, SelectType, submitData } from "../../data";
+import FadeInOut from "./components/animate/FadeInOut";
 import ItemContainer from "./components/items/ItemContainer";
 import WelcomeCard from "./components/welcome/WelcomeCard";
 import { InputComponents } from "./utils";
@@ -44,26 +45,59 @@ const FormPage = () => {
       }}
       className="background"
     >
-      {pointer < 0 && <WelcomeCard callback={increment} />}
+      {pointer < 0 && (
+        <FadeInOut
+          keyTrigger={pointer}
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <WelcomeCard callback={increment} />
+        </FadeInOut>
+      )}
       {pointer >= 0 && Input && pointer != data.length && (
         <ItemContainer
-          Item={() => <Input {...item} value={formValues[item?.name!]} variant="standard" />}
+          Item={() => (
+            <FadeInOut
+              keyTrigger={pointer}
+              style={{
+                width: "100%",
+              }}
+            >
+              <Input {...item} value={formValues[item?.name!]} variant="standard" />
+            </FadeInOut>
+          )}
           Action={() => (
-            <>
+            <FadeInOut
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
               <Button size="medium" variant="outlined" onClick={decrement}>
                 Atras
               </Button>
               <Button size="medium" variant="contained" onClick={increment}>
                 Continuar
               </Button>
-            </>
+            </FadeInOut>
           )}
         />
       )}
       {pointer == data.length && (
         <ItemContainer
           Item={() => (
-            <>
+            <FadeInOut
+              keyTrigger={pointer}
+              style={{
+                width: "100%",
+              }}
+            >
               {lastComponent.map((item) => {
                 let Input = InputComponents[item.type!];
 
@@ -78,7 +112,7 @@ const FormPage = () => {
                   )
                 );
               })}
-            </>
+            </FadeInOut>
           )}
           Action={() => {
             let Submit = InputComponents.submit;
