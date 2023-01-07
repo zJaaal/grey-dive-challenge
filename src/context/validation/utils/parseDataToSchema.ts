@@ -13,10 +13,10 @@ const parseDataToSchema = (data: DataType) => {
       case "text": {
         schema = yup
           .string()
+          .required("Este campo es requerido")
           .test("validate letters", "Este campo solo acepta letras", (value) => {
             return new RegExp(/^[A-Z\s]+$/, "gi").test(value!);
-          })
-          .required("Este campo es requerido");
+          });
         break;
       }
       case "email": {
@@ -39,8 +39,9 @@ const parseDataToSchema = (data: DataType) => {
       case "date": {
         schema = yup
           .date()
-          .max(new Date(), "Por favor, ingrese una fecha valida")
-          .required("Este campo es requerido");
+          .typeError("Este campo es requerido")
+          .required("Este campo es requerido")
+          .max(new Date(), "Por favor, ingrese una fecha valida");
         break;
       }
       case "checkbox": {
