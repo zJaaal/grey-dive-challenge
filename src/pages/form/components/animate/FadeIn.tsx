@@ -13,7 +13,7 @@ let transitions = {
   },
 };
 
-const FadeInOut: FC<any> = ({ children, keyTrigger, style }) => {
+const FadeIn: FC<any> = ({ children, keyTrigger, style }) => {
   return (
     <motion.div
       key={keyTrigger}
@@ -29,4 +29,4 @@ const FadeInOut: FC<any> = ({ children, keyTrigger, style }) => {
   );
 };
 
-export default FadeInOut;
+export default FadeIn;
