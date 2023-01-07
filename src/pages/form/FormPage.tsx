@@ -1,17 +1,19 @@
 import { Button, Grid } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { ValidationContext } from "../../context/validation/ValidationContext";
 import { data, InputType, lastComponent, SelectType, submitData } from "../../data";
-import FadeInOut from "./components/animate/FadeInOut";
+import FadeIn from "./components/animate/FadeIn";
 import ItemContainer from "./components/items/ItemContainer";
+import ProgressBar from "./components/progress/ProgressBar";
 import WelcomeCard from "./components/welcome/WelcomeCard";
 import { InputComponents } from "./utils";
 const FormPage = () => {
-  const { formValues, validateFormValue, formErrors } = useContext(ValidationContext);
+  const { formValues, validateFormValue } = useContext(ValidationContext);
 
   const [pointer, setPointer] = useState(-1);
   const [item, setItem] = useState<InputType | SelectType>();
   const [Input, setInput] = useState<any>();
+  const [prev, setPrev] = useState(0);
 
   useEffect(() => {
     if (pointer > 0) setPointer(-1);
@@ -28,10 +30,19 @@ const FormPage = () => {
   const increment = () => {
     if (pointer < 0) setPointer((prev) => ++prev);
 
-    if (pointer >= 0 && validateFormValue(item?.name)) setPointer((prev) => ++prev);
+    if (pointer >= 0 && validateFormValue(item?.name))
+      setPointer((prev) => {
+        setPrev(prev);
+
+        return ++prev;
+      });
   };
   const decrement = () => {
-    setPointer((prev) => --prev);
+    setPointer((prev) => {
+      setPrev(prev);
+
+      return --prev;
+    });
   };
 
   return (
@@ -45,8 +56,15 @@ const FormPage = () => {
       }}
       className="background"
     >
+      {pointer >= 0 && (
+        <ProgressBar
+          value={pointer + 1}
+          prev={pointer == 0 && prev == 0 ? 0 : prev + 1}
+          max={data.length + 1}
+        />
+      )}
       {pointer < 0 && (
-        <FadeInOut
+        <FadeIn
           keyTrigger={pointer}
           style={{
             width: "100%",
@@ -57,22 +75,22 @@ const FormPage = () => {
           }}
         >
           <WelcomeCard callback={increment} />
-        </FadeInOut>
+        </FadeIn>
       )}
       {pointer >= 0 && Input && pointer != data.length && (
         <ItemContainer
           Item={() => (
-            <FadeInOut
+            <FadeIn
               keyTrigger={pointer}
               style={{
                 width: "100%",
               }}
             >
               <Input {...item} value={formValues[item?.name!]} variant="standard" />
-            </FadeInOut>
+            </FadeIn>
           )}
           Action={() => (
-            <FadeInOut
+            <FadeIn
               style={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -85,14 +103,14 @@ const FormPage = () => {
               <Button size="medium" variant="contained" onClick={increment}>
                 Continuar
               </Button>
-            </FadeInOut>
+            </FadeIn>
           )}
         />
       )}
       {pointer == data.length && (
         <ItemContainer
           Item={() => (
-            <FadeInOut
+            <FadeIn
               keyTrigger={pointer}
               style={{
                 width: "100%",
@@ -112,7 +130,7 @@ const FormPage = () => {
                   )
                 );
               })}
-            </FadeInOut>
+            </FadeIn>
           )}
           Action={() => {
             let Submit = InputComponents.submit;
