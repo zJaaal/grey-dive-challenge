@@ -9,10 +9,10 @@ const SubmitInput = React.forwardRef<
   const { saveAnswers } = useContext(ValidationContext);
 
   let boxStyle: SxProps = {
-    width: "50vw",
+    width: "inherit",
     display: "flex",
     justifyContent: "end",
-    marginBottom: "40px",
+    marginBottom: "10px",
   };
 
   return (

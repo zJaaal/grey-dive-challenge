@@ -9,52 +9,48 @@ import "moment/locale/es";
 import React, { RefObject, useContext, useState } from "react";
 import { ValidationContext } from "../../../../context/validation/ValidationContext";
 import { DateInputProps } from "./types";
+import { responsiveTypography } from "../../../../theme/mainTheme";
 
 const DateInput = React.forwardRef<RefObject<HTMLInputElement>, DateInputProps>((props, ref) => {
-  const { handleFormValueChange } = useContext(ValidationContext);
-  const [error, setError] = useState<string | null>(null);
+  const { handleFormValueChange, formErrors } = useContext(ValidationContext);
 
-  let handleDateChange = (value: Moment | null) => {
-    if (value == null) return setError("Este campo es requerido");
-
-    let { isValid, errorMessage } = handleFormValueChange(props.name!, value.toDate());
-
-    if (!isValid) setError(errorMessage!);
-    else setError(null);
+  let handleDateChange = (value: Moment | string) => {
+    handleFormValueChange(props.name!, moment.isMoment(value) ? value.toDate() : value);
   };
 
   let inputStyle: SxProps = {
     height: "24px",
-    width: "50%",
+    width: "100%",
+    fontColor: "white",
   };
 
   let formStyle: SxProps = {
-    width: "100vw",
+    width: "100%",
     display: "flex",
-    alignContent: "center",
-    flexWrap: "wrap",
-    marginBottom: "40px",
+    alignItems: "start",
+    justifyContent: "center",
+    flexDirection: "column",
+    marginBottom: "20px",
   };
 
   return (
-    <LocalizationProvider
-      dateAdapter={AdapterMoment}
-      adapterLocale="es"
-      localeText={esES.components.MuiLocalizationProvider.defaultProps.localeText}
-    >
+    <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale="es">
       <DatePicker
         {...props}
-        value={props.value}
-        onChange={(value) => handleDateChange(value)}
+        onChange={(value) => handleDateChange(value || "")}
         maxDate={moment()}
         renderInput={(params) => (
           <FormControl {...props} sx={formStyle}>
-            <Typography variant="h5" sx={{ marginBottom: "8.4px" }} gutterBottom>
+            <Typography
+              variant="h5"
+              sx={{ marginBottom: "20px", ...responsiveTypography }}
+              gutterBottom
+            >
               {params.label} <span style={{ color: "red" }}>*</span>
             </Typography>
             <TextField inputRef={ref} {...params} sx={inputStyle} label="" variant="standard" />
             <FormHelperText sx={{ color: "red", marginTop: "10px" }}>
-              {error || ""}
+              {formErrors[props.name!]}
             </FormHelperText>{" "}
           </FormControl>
         )}

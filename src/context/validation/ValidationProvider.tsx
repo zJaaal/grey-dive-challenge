@@ -1,42 +1,45 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { ValidationContext } from "./ValidationContext";
-import { data } from "../../data";
+import { rawData } from "../../data";
+
 import { ValidateResponse } from "./types";
 import { saveOnDatabase } from "../../firebase";
 import { formSchemas } from "./utils/formSchemas";
+import moment, { Moment } from "moment";
 
 const ValidationProvider: FC<any> = ({ children }) => {
   const [formValues, setFormValues] = useState<any>();
+  const [formErrors, setFormErrors] = useState<any>();
 
-  const validateFormValue = (key: string, value: string | Date | boolean): ValidateResponse => {
-    let response: ValidateResponse = {
-      isValid: true,
-    };
-
+  const validateFormValue = (key: string, value: string | boolean | Date = formValues[key]) => {
     try {
       formSchemas[key].validateSync(value);
+      setFormErrors((prev: any) => ({ ...prev, [key]: null }));
+      return true;
     } catch (error) {
-      response = {
-        isValid: false,
-        errorMessage: (error as Error).message,
-      };
+      setFormErrors((prev: any) => ({ ...prev, [key]: (error as Error).message }));
+      return false;
     }
-    return response;
   };
 
-  const handleFormValueChange = (key: string, value: string | Date | boolean): ValidateResponse => {
-    let response = validateFormValue(key, value);
+  const handleFormValueChange = (key: string, value: string | Date | boolean) => {
+    validateFormValue(key, value);
 
     setFormValues((prev: any) => ({
       ...prev,
       [key]: value,
     }));
-
-    return response;
   };
 
   const saveAnswers = () => {
-    if (Object.keys(formValues).every((key) => validateFormValue(key, formValues[key]).isValid)) {
+    let keys = Object.keys(formValues);
+
+    keys.forEach((key) => {
+      if (moment.isMoment(formValues[key]))
+        formValues[key] = formValues[key].toDate().toISOString();
+    });
+
+    if (keys.reduce((acc, key) => (acc += Number(validateFormValue(key))), 0) == keys.length) {
       saveOnDatabase(formValues)
         .then((uid) => localStorage.setItem("uid", uid))
         .catch((_) => console.log("Something went wrong"));
@@ -50,19 +53,24 @@ const ValidationProvider: FC<any> = ({ children }) => {
 
   useEffect(() => {
     let formValues: any = {};
-    data.forEach((item) => {
+    let formErrors: any = {};
+    rawData.forEach((item) => {
       if (item.name) {
         formValues[item.name] = "";
-        if (item.type == "date") formValues[item.name] = null;
+        if (item.type == "date") formValues[item.name] = "";
         if (item.type == "checkbox") formValues[item.name] = false;
+        formErrors[item.name] = null;
       }
     });
 
     setFormValues(formValues);
+    setFormErrors(formErrors);
   }, []);
 
   return (
-    <ValidationContext.Provider value={{ formValues, handleFormValueChange, saveAnswers }}>
+    <ValidationContext.Provider
+      value={{ formValues, handleFormValueChange, saveAnswers, validateFormValue, formErrors }}
+    >
       {children}
     </ValidationContext.Provider>
   );

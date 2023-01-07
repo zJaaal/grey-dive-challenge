@@ -4,12 +4,33 @@ body {
   width: 100%;
 }
 
+#root {
+  height: 100%;
+}
 
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+.background {
+  background: linear-gradient(to right, #4A00E0, #8E2DE2);
+  background-size: 400% 400%;
+  animation-name: animate-bg;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+
+}
+
+
+@keyframes animate-bg {
+
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+
 }

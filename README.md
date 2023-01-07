@@ -18,6 +18,8 @@ Para los Schemas dinamicos, con un poco más de información acerca de que valid
 
 El context puede ser cambiado por alguna libreria que acepte schemas como Formik, en mi caso, por cuestion de tiempo, decidi hacer mi propio handle del formulario desde un context para no perder tiempo en analizar cual seria la mejor forma de implementar Formik en este caso en particular. Aun así, tal vez este mismo contexto puede ser mejorado y asi ahorrarse el peso del bundle de una dependencia.
 
+Existe un warning en el date picker por cuestiones de Moment.JS y el objeto Date de JS. No di con la solución hasta este momento, asi que se podria cambiar el Adapter a uno mas estable como Luxon.
+
 # Tecnologias
 
 - React
