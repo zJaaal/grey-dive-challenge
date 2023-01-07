@@ -11,6 +11,16 @@ export const theme = createTheme({
               "&:hover": { backgroundColor: "#8E2DE2" },
             };
           }
+          if (ownerState.variant == "outlined") {
+            return {
+              borderColor: "#4A00E0",
+              color: "#4A00E0",
+              "&:hover": {
+                borderColor: "#8E2DE2",
+                color: "#8E2DE2",
+              },
+            };
+          }
         },
       },
     },
