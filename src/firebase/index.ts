@@ -21,7 +21,7 @@ const db = getFirestore(app);
 
 async function saveOnDatabase(data: any) {
   try {
-    const docRef = await addDoc(collection(db, "answers"), data);
+    await addDoc(collection(db, "answers"), data);
   } catch (e) {
     console.error("Error adding document: ", e);
   }

@@ -4,7 +4,7 @@ import { rawData } from "../../data";
 
 import { saveOnDatabase } from "../../firebase";
 import { formSchemas } from "./utils/formSchemas";
-import moment, { Moment } from "moment";
+import moment from "moment";
 
 const ValidationProvider: FC<any> = ({ children }) => {
   const [formValues, setFormValues] = useState<any>();
