@@ -32,7 +32,20 @@ async function getAnswers(): Promise<FirebaseResponse> {
     let result: any[] = [];
     let data = await getDocs(collection(db, `answers`));
 
-    data.forEach((doc) => result.push({ id: doc.id, ...doc.data() }));
+    data.forEach((doc) => {
+      let docData = doc.data();
+
+      //To transform timestamps to human readable time
+      Object.keys(docData).forEach((key) => {
+        if (typeof docData[key].seconds != "undefined")
+          docData[key] = new Date(docData[key].toDate()).toLocaleDateString();
+      });
+
+      result.push({
+        id: doc.id,
+        ...docData,
+      });
+    });
 
     return {
       status: "success",
