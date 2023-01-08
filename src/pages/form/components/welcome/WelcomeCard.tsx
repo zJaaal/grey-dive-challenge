@@ -7,7 +7,7 @@ const WelcomeCard: FC<WelcomeCardProps> = ({ callback }) => {
     <Card
       className="glass"
       sx={{
-        width: { xs: "90%", sm: "70%", md: "50%", lg: "50%" },
+        width: { xs: "90%", sm: "70%", md: "50%" },
         height: 300,
         display: "flex",
         flexDirection: "column",

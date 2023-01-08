@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, doc, getDoc, getFirestore } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore } from "firebase/firestore";
+import { FirebaseResponse } from "./types";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,21 +22,42 @@ const db = getFirestore(app);
 
 async function saveOnDatabase(data: any) {
   try {
-    const docRef = await addDoc(collection(db, "answers"), data);
-    console.log("Document written with ID: ", docRef.id);
-    return docRef.id;
+    await addDoc(collection(db, "answers"), data);
   } catch (e) {
     console.error("Error adding document: ", e);
   }
-  return "";
 }
-async function getResponses(uid: string) {
+async function getAnswers(): Promise<FirebaseResponse> {
   try {
-    const data = await getDoc(doc(db, `answers/${uid}`));
-    console.log("Document written with ID: ", data);
+    let result: any[] = [];
+    let data = await getDocs(collection(db, `answers`));
+
+    data.forEach((doc) => {
+      let docData = doc.data();
+
+      //To transform timestamps to human readable time
+      Object.keys(docData).forEach((key) => {
+        if (typeof docData[key].seconds != "undefined")
+          docData[key] = new Date(docData[key].toDate()).toLocaleDateString();
+      });
+
+      result.push({
+        id: doc.id,
+        ...docData,
+      });
+    });
+
+    return {
+      status: "success",
+      data: result,
+    };
   } catch (e) {
-    console.error("Error adding document: ", e);
+    console.log(e);
+    return {
+      status: "error",
+      data: [],
+    };
   }
 }
 
-export { db, saveOnDatabase, getResponses };
+export { db, saveOnDatabase, getAnswers as getResponses };

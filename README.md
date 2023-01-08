@@ -10,15 +10,17 @@ Por último, traé las respuestas de la base de datos ya mencionada y mostralas 
 
 # Estrategia
 
-Realizar componentes dinamicos que acepten todo tipo de data (compatible con los Input Types de HTML) para asi generar inputs dedicados a cada item de la data. Ademas, se generaran schemas de Yup para manejar las validaciones por medio de un React Context.
+Realizar componentes dinamicos que acepten todo tipo de data (compatible con los Input Types de HTML) para asi generar inputs dedicados a cada item de la data. Ademas, se generaran schemas usando un parser que sea capaz de traducir la data en el JSON a schemas de Yup para manejar las validaciones por medio de un React Context.
 
 # Mejoras Recomendadas
 
-Para los Schemas dinamicos, con un poco más de información acerca de que validaciones se realizaran, planificación y tiempo, se puede crear un parser lo suficientemente robusto y eficiente como para generar schemas de cualquier tipo con cualquier validación necesaria apartir de un objeto JS como el input de este challenge.
+Para los Schemas dinámicos, con un poco más de información acerca de que validaciones se realizaran, planificación y tiempo, se puede crear un parser lo suficientemente robusto y eficiente como para generar schemas de cualquier tipo con cualquier validación necesaria a partir de un objeto JS como el input de este challenge.
 
-El context puede ser cambiado por alguna libreria que acepte schemas como Formik, en mi caso, por cuestion de tiempo, decidi hacer mi propio handle del formulario desde un context para no perder tiempo en analizar cual seria la mejor forma de implementar Formik en este caso en particular. Aun así, tal vez este mismo contexto puede ser mejorado y asi ahorrarse el peso del bundle de una dependencia.
+El context puede ser cambiado por alguna librería que acepte schemas como Formik, en mi caso, por cuestión de tiempo, decidí hacer mi propio handle del formulario desde un context para no perder tiempo en analizar cual sería la mejor forma de implementar Formik en este caso en particular. Aun así, tal vez este mismo contexto puede ser mejorado y así ahorrarse el peso del bundle de una dependencia.
 
-Existe un warning en el date picker por cuestiones de Moment.JS y el objeto Date de JS. No di con la solución hasta este momento, asi que se podria cambiar el Adapter a uno mas estable como Luxon.
+Existe un warning en el date picker por cuestiones de Moment.JS y el objeto Date de JS. No di con la solución hasta este momento, así que se podría cambiar el Adapter a uno más estable como Luxon.
+
+Para mostrar todos los datos se usó DataGrid de Material UI, aunque es un componente poderoso, la visualización en pantallas pequeñas es pobre, por lo tanto, se podría optar por un diseño más mobile friendly en caso de necesitarlo.
 
 # Tecnologias
 
@@ -31,3 +33,4 @@ Existe un warning en el date picker por cuestiones de Moment.JS y el objeto Date
 - Yup
 - React Router
 - Firebase/Firestore
+- SweetAlert2

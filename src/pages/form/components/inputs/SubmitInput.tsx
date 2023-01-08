@@ -1,13 +1,12 @@
+import { LoadingButton, LoadingButtonProps } from "@mui/lab";
 import { Box, Button, ButtonProps, SxProps } from "@mui/material";
 import React, { RefObject, useContext } from "react";
 import { ValidationContext } from "../../../../context/validation/ValidationContext";
 
 const SubmitInput = React.forwardRef<
   RefObject<HTMLButtonElement>,
-  ButtonProps & { label: string } & { callback: () => void }
+  LoadingButtonProps & { label: string } & { callback: () => void }
 >((props, ref) => {
-  const { saveAnswers } = useContext(ValidationContext);
-
   let boxStyle: SxProps = {
     width: "inherit",
     display: "flex",
@@ -16,9 +15,14 @@ const SubmitInput = React.forwardRef<
 
   return (
     <Box sx={boxStyle} ref={ref}>
-      <Button type="submit" variant="contained" onClick={saveAnswers}>
+      <LoadingButton
+        type="submit"
+        variant="contained"
+        onClick={props.callback}
+        loading={props.loading}
+      >
         {props.label}
-      </Button>
+      </LoadingButton>
     </Box>
   );
 });
