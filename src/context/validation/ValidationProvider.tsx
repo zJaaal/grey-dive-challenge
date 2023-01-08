@@ -1,8 +1,7 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { ValidationContext } from "./ValidationContext";
 import { rawData } from "../../data";
 
-import { ValidateResponse } from "./types";
 import { saveOnDatabase } from "../../firebase";
 import { formSchemas } from "./utils/formSchemas";
 import moment, { Moment } from "moment";
@@ -10,6 +9,27 @@ import moment, { Moment } from "moment";
 const ValidationProvider: FC<any> = ({ children }) => {
   const [formValues, setFormValues] = useState<any>();
   const [formErrors, setFormErrors] = useState<any>();
+  const [loading, setLoading] = useState<any>(false);
+
+  const initValues = () => {
+    let formValues: any = {};
+    let formErrors: any = {};
+    rawData.forEach((item) => {
+      if (item.name) {
+        formValues[item.name] = "";
+        if (item.type == "date") formValues[item.name] = "";
+        if (item.type == "checkbox") formValues[item.name] = false;
+        formErrors[item.name] = null;
+      }
+    });
+
+    setFormValues(formValues);
+    setFormErrors(formErrors);
+  };
+
+  useEffect(() => {
+    initValues();
+  }, []);
 
   const validateFormValue = (key: string, value: string | boolean | Date = formValues[key]) => {
     try {
@@ -40,9 +60,11 @@ const ValidationProvider: FC<any> = ({ children }) => {
     });
 
     if (keys.reduce((acc, key) => (acc += Number(validateFormValue(key))), 0) == keys.length) {
+      setLoading(true);
       saveOnDatabase(formValues)
-        .then((uid) => localStorage.setItem("uid", uid))
-        .catch((_) => console.log("Something went wrong"));
+        .then(() => console.log("Saved!"))
+        .catch((_) => console.log("Something went wrong"))
+        .finally(() => setLoading(false));
 
       return true;
     } else {
@@ -51,25 +73,16 @@ const ValidationProvider: FC<any> = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    let formValues: any = {};
-    let formErrors: any = {};
-    rawData.forEach((item) => {
-      if (item.name) {
-        formValues[item.name] = "";
-        if (item.type == "date") formValues[item.name] = "";
-        if (item.type == "checkbox") formValues[item.name] = false;
-        formErrors[item.name] = null;
-      }
-    });
-
-    setFormValues(formValues);
-    setFormErrors(formErrors);
-  }, []);
-
   return (
     <ValidationContext.Provider
-      value={{ formValues, handleFormValueChange, saveAnswers, validateFormValue, formErrors }}
+      value={{
+        formValues,
+        handleFormValueChange,
+        saveAnswers,
+        validateFormValue,
+        formErrors,
+        loading,
+      }}
     >
       {children}
     </ValidationContext.Provider>
