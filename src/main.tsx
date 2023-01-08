@@ -7,6 +7,7 @@ import { theme } from "./theme/mainTheme";
 import router from "./routes/router";
 
 import "./index.css";
+import "sweetalert2/src/sweetalert2.scss";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
