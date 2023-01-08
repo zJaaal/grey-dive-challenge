@@ -1,4 +1,4 @@
 export const routes = {
   main: "/",
-  review: "/review/:uid",
+  answers: "/answers",
 };
