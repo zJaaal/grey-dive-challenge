@@ -27,7 +27,7 @@ const FormPage = () => {
     setInput(InputComponents[item?.type || ""]);
   }, [item]);
 
-  const increment = () => {
+  const handleIncrement = () => {
     if (pointer < 0) setPointer((prev) => ++prev);
 
     if (pointer >= 0 && validateFormValue(item?.name))
@@ -37,11 +37,20 @@ const FormPage = () => {
         return ++prev;
       });
   };
-  const decrement = () => {
+  const handleDecrement = () => {
     setPointer((prev) => {
       setPrev(prev);
 
       return --prev;
+    });
+  };
+
+  const handleSubmit = () => {
+    saveAnswers().then((result: boolean) => {
+      if (result) {
+        setPointer(-1);
+        setPrev(0);
+      }
     });
   };
 
@@ -74,7 +83,7 @@ const FormPage = () => {
             justifyContent: "center",
           }}
         >
-          <WelcomeCard callback={increment} />
+          <WelcomeCard callback={handleIncrement} />
         </FadeIn>
       )}
       {pointer >= 0 && Input && pointer != data.length && (
@@ -97,10 +106,10 @@ const FormPage = () => {
                 width: "100%",
               }}
             >
-              <Button size="medium" variant="outlined" onClick={decrement}>
+              <Button size="medium" variant="outlined" onClick={handleDecrement}>
                 Atras
               </Button>
-              <Button size="medium" variant="contained" onClick={increment}>
+              <Button size="medium" variant="contained" onClick={handleIncrement}>
                 Continuar
               </Button>
             </FadeIn>
@@ -137,14 +146,14 @@ const FormPage = () => {
 
             return (
               <>
-                <Button size="medium" variant="outlined" onClick={decrement}>
+                <Button size="medium" variant="outlined" onClick={handleDecrement}>
                   Atras
                 </Button>
                 <Submit
                   {...submitData}
                   size="medium"
                   variant="contained"
-                  callback={saveAnswers}
+                  callback={handleSubmit}
                   loading={loading}
                 />
               </>
