@@ -5,11 +5,14 @@ import { rawData } from "../../data";
 import { saveOnDatabase } from "../../firebase";
 import { formSchemas } from "./utils/formSchemas";
 import moment from "moment";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const ValidationProvider: FC<any> = ({ children }) => {
   const [formValues, setFormValues] = useState<any>();
   const [formErrors, setFormErrors] = useState<any>();
   const [loading, setLoading] = useState<any>(false);
+  const navigate = useNavigate();
 
   const initValues = () => {
     let formValues: any = {};
@@ -51,7 +54,8 @@ const ValidationProvider: FC<any> = ({ children }) => {
     }));
   };
 
-  const saveAnswers = () => {
+  const saveAnswers = async () => {
+    let result;
     let keys = Object.keys(formValues);
 
     keys.forEach((key) => {
@@ -61,16 +65,35 @@ const ValidationProvider: FC<any> = ({ children }) => {
 
     if (keys.reduce((acc, key) => (acc += Number(validateFormValue(key))), 0) == keys.length) {
       setLoading(true);
-      saveOnDatabase(formValues)
-        .then(() => console.log("Saved!"))
-        .catch((_) => console.log("Something went wrong"))
-        .finally(() => setLoading(false));
 
-      return true;
-    } else {
-      console.log("Some values are invalid");
-      return false;
+      try {
+        await saveOnDatabase(formValues);
+        let modalResult = await Swal.fire({
+          title: "Guardado satisfactoriamente",
+          icon: "success",
+          showDenyButton: true,
+          denyButtonText: "Volver al inicio",
+          confirmButtonText: "Ir a las Respuestas",
+          confirmButtonColor: "#4A00E0",
+        });
+        if (modalResult.isConfirmed) {
+          navigate("answers");
+        }
+        initValues();
+        result = true;
+      } catch (err) {
+        Swal.fire({
+          title: "Parece que algo salio mal.",
+          icon: "error",
+          confirmButtonText: "Intentar de nuevo",
+          confirmButtonColor: "#4A00E0",
+        });
+        result = false;
+      } finally {
+        setLoading(false);
+      }
     }
+    return result;
   };
 
   return (
