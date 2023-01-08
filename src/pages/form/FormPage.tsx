@@ -8,7 +8,7 @@ import ProgressBar from "./components/progress/ProgressBar";
 import WelcomeCard from "./components/welcome/WelcomeCard";
 import { InputComponents } from "./utils";
 const FormPage = () => {
-  const { formValues, validateFormValue } = useContext(ValidationContext);
+  const { formValues, validateFormValue, loading, saveAnswers } = useContext(ValidationContext);
 
   const [pointer, setPointer] = useState(-1);
   const [item, setItem] = useState<InputType | SelectType>();
@@ -140,7 +140,13 @@ const FormPage = () => {
                 <Button size="medium" variant="outlined" onClick={decrement}>
                   Atras
                 </Button>
-                <Submit {...submitData} size="medium" variant="contained" />
+                <Submit
+                  {...submitData}
+                  size="medium"
+                  variant="contained"
+                  callback={saveAnswers}
+                  loading={loading}
+                />
               </>
             );
           }}
