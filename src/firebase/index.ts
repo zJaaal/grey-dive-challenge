@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, doc, getDoc, getFirestore } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore } from "firebase/firestore";
+import { FirebaseResponse } from "./types";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,13 +27,24 @@ async function saveOnDatabase(data: any) {
     console.error("Error adding document: ", e);
   }
 }
-async function getResponses(uid: string) {
+async function getAnswers(): Promise<FirebaseResponse> {
   try {
-    const data = await getDoc(doc(db, `answers/${uid}`));
-    console.log("Document written with ID: ", data);
+    let result: any[] = [];
+    let data = await getDocs(collection(db, `answers`));
+
+    data.forEach((doc) => result.push({ id: doc.id, ...doc.data() }));
+
+    return {
+      status: "success",
+      data: result,
+    };
   } catch (e) {
-    console.error("Error adding document: ", e);
+    console.log(e);
+    return {
+      status: "error",
+      data: [],
+    };
   }
 }
 
-export { db, saveOnDatabase, getResponses };
+export { db, saveOnDatabase, getAnswers as getResponses };
