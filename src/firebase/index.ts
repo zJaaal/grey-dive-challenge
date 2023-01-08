@@ -22,12 +22,9 @@ const db = getFirestore(app);
 async function saveOnDatabase(data: any) {
   try {
     const docRef = await addDoc(collection(db, "answers"), data);
-    console.log("Document written with ID: ", docRef.id);
-    return docRef.id;
   } catch (e) {
     console.error("Error adding document: ", e);
   }
-  return "";
 }
 async function getResponses(uid: string) {
   try {
