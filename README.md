@@ -75,6 +75,13 @@ items.forEach((item) => {
           schema = schema[key](key == "required" ? "Este campo es requerido" : currentValidation);
         }
       });
+      break;
+    }
+
+    //Los demas casos...
+
+    default: {
+      break;
     }
   }
   //Guardamos el schema en el item correspondiente
