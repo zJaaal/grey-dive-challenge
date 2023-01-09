@@ -1,5 +1,6 @@
 import { createTheme, SxProps } from "@mui/material/styles";
 
+//MUI Theme I used
 export const theme = createTheme({
   components: {
     MuiButton: {
