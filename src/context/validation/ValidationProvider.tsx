@@ -77,7 +77,7 @@ const ValidationProvider: FC<any> = ({ children }) => {
    * @returns Whether we need to go to the start of the form or not, if not that means something happened with the saving, so we can try to save again
    */
   const saveAnswers = async () => {
-    let result;
+    let result = false;
     let keys = Object.keys(formValues);
 
     //Transform dates to ISOString
