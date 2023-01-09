@@ -4,7 +4,7 @@ type ValidationContextType = {
   formValues?: any;
   handleFormValueChange?: (key: string, value: string | Date | boolean) => void;
   saveAnswers?: () => Promise<boolean>;
-  validateFormValue?: (key: string, value?: string | Date | boolean) => void;
+  validateFormValue?: (key: string, value?: string | Date | boolean) => boolean;
   formErrors?: any;
   loading?: boolean;
 };

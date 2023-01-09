@@ -1,17 +1,18 @@
-import React, { useContext, useState } from "react";
-import { ValidationContext } from "../../../context/validation/ValidationContext";
+import React, { useState } from "react";
 import { SliderFormProps } from "./type";
 
-const useSliderForm: SliderFormProps = (submitCallback: () => Promise<boolean>) => {
-  const { validateFormValue } = useContext(ValidationContext);
+const useSliderForm: SliderFormProps = (submitCallback: (() => Promise<boolean>) | undefined) => {
   const [pointer, setPointer] = useState(-1);
   const [prev, setPrev] = useState(0);
 
   //Increment handler that validates if the current input has a valid value before we advance
-  const handleIncrement = (validateCallback?: (key?: string) => boolean, key?: string) => {
+  const handleIncrement = (
+    validateCallback?: (key: string, value?: string | Date | boolean) => boolean,
+    key?: string
+  ) => {
     if (pointer < 0) setPointer((prev) => ++prev);
 
-    if (pointer >= 0 && validateCallback!(key))
+    if (pointer >= 0 && validateCallback!(key!))
       setPointer((prev) => {
         setPrev(prev);
 
@@ -30,7 +31,7 @@ const useSliderForm: SliderFormProps = (submitCallback: () => Promise<boolean>) 
 
   //Here we handle the submit and reset the pointer if we want to go the start
   const handleSubmit = () => {
-    submitCallback().then((result: boolean) => {
+    submitCallback!().then((result: boolean) => {
       if (result) {
         setPointer(-1);
         setPrev(0);
