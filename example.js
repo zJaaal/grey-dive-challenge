@@ -39,6 +39,7 @@ items.forEach((item) => {
 
         let currentValidation = item[key];
 
+        //Existen dos formas de usar regex en yup, en la que mas confio es usando el metodo test
         if (key == "regex") {
           schema = schema.test("dynamic test", currentValidation.message, (value) =>
             new RegExp(currentValidation.constrain, currentValidation.flags).test(value)
