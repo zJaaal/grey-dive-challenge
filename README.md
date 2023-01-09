@@ -37,8 +37,10 @@ let items = [
 //Lo que es posible validar
 let stringValidations = ["min", "max", "regex", "required"];
 
-// Iteramos por los objetos
+//Objeto para almacenar los schemas
 let formSchemas = {};
+
+// Iteramos por los objetos
 items.forEach((item) => {
   let schema;
 
