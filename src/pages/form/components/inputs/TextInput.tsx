@@ -1,5 +1,5 @@
-import { FormControl, FormHelperText, SxProps, TextField, Typography } from "@mui/material";
-import React, { RefObject, useContext, useState } from "react";
+import { FormControl, FormHelperText, TextField, Typography } from "@mui/material";
+import React, { RefObject, useContext } from "react";
 import { ValidationContext } from "../../../../context/validation/ValidationContext";
 import { responsiveTypography } from "../../../../theme/mainTheme";
 import { formStyle, inputStyle } from "./sxProps";
@@ -14,7 +14,7 @@ const TextInput = React.forwardRef<RefObject<HTMLInputElement>, TextInputProps>(
   let handleTextChange = (value: string) => {
     if (value.length == 1 && value == " ") value = value.trim();
 
-    handleFormValueChange(props.name!, value);
+    handleFormValueChange!(props.name!, value);
   };
 
   return (

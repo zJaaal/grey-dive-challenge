@@ -13,7 +13,7 @@ const SelectCustomInput = React.forwardRef<RefObject<HTMLInputElement>, SelectIn
     const { handleFormValueChange, formErrors } = useContext(ValidationContext);
 
     let handleSelectChange = (value: string) => {
-      handleFormValueChange(props.name!, value);
+      handleFormValueChange!(props.name!, value);
     };
     let inputExtendedStyle: SxProps = {
       ...inputStyle,

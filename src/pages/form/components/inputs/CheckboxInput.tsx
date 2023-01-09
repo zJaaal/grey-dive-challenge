@@ -1,11 +1,4 @@
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  SxProps,
-  Typography,
-} from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, FormHelperText, Typography } from "@mui/material";
 import React, { RefObject, SyntheticEvent, useContext, useState } from "react";
 import { ValidationContext } from "../../../../context/validation/ValidationContext";
 import { formStyle } from "./sxProps";
@@ -19,7 +12,7 @@ const CheckboxInput = React.forwardRef<RefObject<HTMLInputElement>, CheckboxInpu
     const { handleFormValueChange, formErrors } = useContext(ValidationContext);
 
     let handleCheckboxChange = (_: SyntheticEvent<Element, Event>, checked: boolean) => {
-      handleFormValueChange(props.name!, checked);
+      handleFormValueChange!(props.name!, checked);
     };
 
     return (

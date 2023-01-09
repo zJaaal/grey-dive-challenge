@@ -19,7 +19,7 @@ const DateInput = React.forwardRef<RefObject<HTMLInputElement>, DateInputProps>(
   const { handleFormValueChange, formErrors } = useContext(ValidationContext);
 
   let handleDateChange = (value: Moment | string) => {
-    handleFormValueChange(props.name!, moment.isMoment(value) ? value.toDate() : value);
+    handleFormValueChange!(props.name!, moment.isMoment(value) ? value.toDate() : value);
   };
 
   return (
