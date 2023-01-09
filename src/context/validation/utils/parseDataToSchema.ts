@@ -9,8 +9,17 @@ const parseDataToSchema = (data: DataType) => {
   data.forEach((item) => {
     let schema;
 
+    //For item.type we create schemas
     switch (item.type) {
       case "text": {
+        //In this case I would map the object to see which validations it needs so we can do something like:
+        // let validationsForString = ["min", "max", "regex", ...] // All validations we can use in string type
+        // let validations = Object.keys(item).filter((key) => validationsForString.includes(key));
+        // schema = yup.string();
+        // in the case of regex we need to call test function, but we can just do a function that builds it
+        // validations.forEach((key) => {
+        //    schema = schema[key](item[key]) //We call the schema with the item value
+        // });
         schema = yup
           .string()
           .required("Este campo es requerido")
@@ -54,7 +63,7 @@ const parseDataToSchema = (data: DataType) => {
       default:
         return;
     }
-
+    //We set the schema to the schemas object
     if (item.name && schema) dataSchemas[item.name] = schema;
   });
 
