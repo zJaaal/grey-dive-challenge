@@ -121,7 +121,7 @@ Existe un warning en el date picker por cuestiones de Moment.JS y el objeto Date
 
 Para mostrar todos los datos se usó DataGrid de Material UI, aunque es un componente poderoso, la visualización en pantallas pequeñas es pobre, por lo tanto, se podría optar por un diseño más mobile friendly en caso de necesitarlo.
 
-Finalmente, en cuanto a diseño opte por hacer algo similar a TypeForm, por lo tanto, si se requiere de hacer un formulario más simple, este codigo se puede simplificar un monton en cuanto a la pagina de formulario y ademas se puede hacer mas reutilizable los componentes inputs, ya que, el diseño no seria tan especifico
+Finalmente, en cuanto a diseño opte por hacer algo similar a TypeForm, por lo tanto, si se requiere de hacer un formulario más simple, este codigo se puede simplificar un monton en cuanto a la pagina de formulario y ademas se puede hacer mas reutilizable los componentes inputs, ya que, el diseño no seria tan especifico.
 
 # Tecnologias
 
