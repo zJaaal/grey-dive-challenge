@@ -1,61 +1,20 @@
 import { Button, Grid } from "@mui/material";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext } from "react";
 import { ValidationContext } from "../../context/validation/ValidationContext";
-import { data, InputType, lastComponent, SelectType, submitData } from "../../data";
+import { data, lastComponent, submitData } from "../../data";
 import FadeIn from "./components/animate/FadeIn";
 import ItemContainer from "./components/items/ItemContainer";
 import ProgressBar from "./components/progress/ProgressBar";
 import WelcomeCard from "./components/welcome/WelcomeCard";
+import useInput from "./hooks/useInput";
+import useSliderForm from "./hooks/useSliderForm";
 import { InputComponents } from "./utils";
 const FormPage = () => {
-  const { formValues, validateFormValue, loading, saveAnswers } = useContext(ValidationContext);
+  const { formValues, loading, saveAnswers, validateFormValue } = useContext(ValidationContext);
 
-  //FormPage states
-  const [pointer, setPointer] = useState(-1);
-  const [item, setItem] = useState<InputType | SelectType>();
-  const [Input, setInput] = useState<any>();
-  const [prev, setPrev] = useState(0);
+  const { pointer, prev, increment, decrement, submit } = useSliderForm(saveAnswers);
 
-  //When pointer changes we get the item from the data
-  useEffect(() => {
-    if (pointer >= 0 && pointer < data.length) setItem(data[pointer]);
-  }, [pointer]);
-
-  //Then when the item changes whe get the input from the InputComponents Object
-  useEffect(() => {
-    setInput(InputComponents[item?.type || ""]);
-  }, [item]);
-
-  //Increment handler that validates if the current input has a valid value before we advance
-  const handleIncrement = () => {
-    if (pointer < 0) setPointer((prev) => ++prev);
-
-    if (pointer >= 0 && validateFormValue(item?.name))
-      setPointer((prev) => {
-        setPrev(prev);
-
-        return ++prev;
-      });
-  };
-
-  //Decrement handler
-  const handleDecrement = () => {
-    setPointer((prev) => {
-      setPrev(prev);
-
-      return --prev;
-    });
-  };
-
-  //Here we handle the submit and reset the pointer if we want to go the start
-  const handleSubmit = () => {
-    saveAnswers().then((result: boolean) => {
-      if (result) {
-        setPointer(-1);
-        setPrev(0);
-      }
-    });
-  };
+  const { item, InputComponent } = useInput(pointer);
 
   return (
     <Grid
@@ -89,12 +48,12 @@ const FormPage = () => {
             justifyContent: "center",
           }}
         >
-          <WelcomeCard callback={handleIncrement} />
+          <WelcomeCard callback={increment} />
         </FadeIn>
       )}
 
       {/* Here we show the current input */}
-      {pointer >= 0 && Input && pointer != data.length && (
+      {pointer >= 0 && InputComponent && pointer != data.length && (
         <ItemContainer
           Item={() => (
             <FadeIn
@@ -103,7 +62,7 @@ const FormPage = () => {
                 width: "100%",
               }}
             >
-              <Input {...item} value={formValues[item?.name!]} variant="standard" />
+              <InputComponent {...item} value={formValues[item?.name!]} variant="standard" />
             </FadeIn>
           )}
           Action={() => (
@@ -114,10 +73,14 @@ const FormPage = () => {
                 width: "100%",
               }}
             >
-              <Button size="medium" variant="outlined" onClick={handleDecrement}>
+              <Button size="medium" variant="outlined" onClick={decrement}>
                 Atras
               </Button>
-              <Button size="medium" variant="contained" onClick={handleIncrement}>
+              <Button
+                size="medium"
+                variant="contained"
+                onClick={() => increment(validateFormValue, item?.name)}
+              >
                 Continuar
               </Button>
             </FadeIn>
@@ -140,11 +103,11 @@ const FormPage = () => {
               }}
             >
               {lastComponent.map((item) => {
-                let Input = InputComponents[item.type!];
+                let InputComponent = InputComponents[item.type!];
 
                 return (
-                  Input && (
-                    <Input
+                  InputComponent && (
+                    <InputComponent
                       {...item}
                       value={formValues[item.name!]}
                       variant="standard"
@@ -160,14 +123,14 @@ const FormPage = () => {
 
             return (
               <>
-                <Button size="medium" variant="outlined" onClick={handleDecrement}>
+                <Button size="medium" variant="outlined" onClick={decrement}>
                   Atras
                 </Button>
                 <Submit
                   {...submitData}
                   size="medium"
                   variant="contained"
-                  callback={handleSubmit}
+                  callback={submit}
                   loading={loading}
                 />
               </>
