@@ -20,6 +20,7 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
+//Simple database save
 async function saveOnDatabase(data: any) {
   try {
     await addDoc(collection(db, "answers"), data);
@@ -27,6 +28,11 @@ async function saveOnDatabase(data: any) {
     console.error("Error adding document: ", e);
   }
 }
+
+/**
+ * @description This handle the response of the database
+ * @returns A Promise with the data and the status of the response
+ */
 async function getAnswers(): Promise<FirebaseResponse> {
   try {
     let result: any[] = [];

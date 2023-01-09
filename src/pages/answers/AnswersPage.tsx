@@ -11,10 +11,13 @@ import FadeIn from "../form/components/animate/FadeIn";
 const AnswersPage = () => {
   const isMounted = useRef(true);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<GridRowsProp>([]);
-  const [columns, setColumns] = useState<GridColDef[]>([]);
   const navigate = useNavigate();
 
+  //MUI Component configuration
+  const [data, setData] = useState<GridRowsProp>([]);
+  const [columns, setColumns] = useState<GridColDef[]>([]);
+
+  //To know whether the component is mounted or not
   useEffect(
     () => () => {
       isMounted.current = false;
@@ -22,10 +25,12 @@ const AnswersPage = () => {
     []
   );
 
+  //Handling request to database
   useEffect(() => {
     setLoading(true);
     getResponses()
       .then((result) => {
+        //Just set the data if the component is mounted
         if (isMounted.current) {
           setData(result.data);
         }
@@ -39,6 +44,8 @@ const AnswersPage = () => {
       })
       .finally(() => setLoading(false));
   }, []);
+
+  //Construct DataGrid columns
 
   useEffect(() => {
     if (data[0]) {

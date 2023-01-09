@@ -2,8 +2,12 @@ import { FormControl, FormHelperText, MenuItem, Select, SxProps, Typography } fr
 import React, { RefObject, useContext } from "react";
 import { ValidationContext } from "../../../../context/validation/ValidationContext";
 import { responsiveTypography } from "../../../../theme/mainTheme";
+import { formStyle, inputStyle } from "./sxProps";
 import { SelectInputProps } from "./types";
 
+/**
+ * @description This components creates a custom select that accepts all needed props and also exposes a ref
+ */
 const SelectCustomInput = React.forwardRef<RefObject<HTMLInputElement>, SelectInputProps>(
   (props, ref) => {
     const { handleFormValueChange, formErrors } = useContext(ValidationContext);
@@ -11,26 +15,15 @@ const SelectCustomInput = React.forwardRef<RefObject<HTMLInputElement>, SelectIn
     let handleSelectChange = (value: string) => {
       handleFormValueChange(props.name!, value);
     };
-    let inputStyle: SxProps = {
-      height: "24px",
-      width: "100%",
-      fontColor: "white",
+    let inputExtendedStyle: SxProps = {
+      ...inputStyle,
       "&:after": { borderColor: "#8E2DE2" },
       "&:focus": { background: "none" },
       "&:active": { background: "none" },
     };
 
-    let formStyle: SxProps = {
-      width: "100%",
-      display: "flex",
-      alignItems: "start",
-      justifyContent: "center",
-      flexDirection: "column",
-      marginBottom: "20px",
-    };
-
     return (
-      <FormControl {...props} sx={formStyle}>
+      <FormControl {...props} sx={{ ...formStyle, marginBottom: "20px" }}>
         <Typography
           variant="h5"
           gutterBottom
@@ -42,7 +35,7 @@ const SelectCustomInput = React.forwardRef<RefObject<HTMLInputElement>, SelectIn
           {...props}
           inputRef={ref}
           onChange={(event) => handleSelectChange(event.target.value as string)}
-          sx={inputStyle}
+          sx={inputExtendedStyle}
           MenuProps={{
             PaperProps: {
               style: {

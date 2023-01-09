@@ -4,6 +4,7 @@ import SelectCustomInput from "../components/inputs/SelectInput";
 import SubmitInput from "../components/inputs/SubmitInput";
 import TextInput from "../components/inputs/TextInput";
 
+//Here we read the input type
 export const InputComponents: any = {
   text: TextInput,
   email: TextInput,

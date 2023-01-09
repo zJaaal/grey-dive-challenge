@@ -6,6 +6,7 @@ import AnswersPage from "../pages/answers/AnswersPage";
 import FormPage from "../pages/form/FormPage";
 import { routes } from "./routes";
 
+//Router created with the new React Router API
 const router = createBrowserRouter([
   {
     element: (

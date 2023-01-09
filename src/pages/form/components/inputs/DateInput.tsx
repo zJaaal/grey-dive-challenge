@@ -10,27 +10,16 @@ import React, { RefObject, useContext, useState } from "react";
 import { ValidationContext } from "../../../../context/validation/ValidationContext";
 import { DateInputProps } from "./types";
 import { responsiveTypography } from "../../../../theme/mainTheme";
+import { formStyle, inputStyle } from "./sxProps";
 
+/**
+ * @description This components creates a custom date input that accepts all needed props and also exposes a ref
+ */
 const DateInput = React.forwardRef<RefObject<HTMLInputElement>, DateInputProps>((props, ref) => {
   const { handleFormValueChange, formErrors } = useContext(ValidationContext);
 
   let handleDateChange = (value: Moment | string) => {
     handleFormValueChange(props.name!, moment.isMoment(value) ? value.toDate() : value);
-  };
-
-  let inputStyle: SxProps = {
-    height: "24px",
-    width: "100%",
-    fontColor: "white",
-  };
-
-  let formStyle: SxProps = {
-    width: "100%",
-    display: "flex",
-    alignItems: "start",
-    justifyContent: "center",
-    flexDirection: "column",
-    marginBottom: "20px",
   };
 
   return (
@@ -39,8 +28,9 @@ const DateInput = React.forwardRef<RefObject<HTMLInputElement>, DateInputProps>(
         {...props}
         onChange={(value) => handleDateChange(value || "")}
         maxDate={moment()}
+        minDate={moment("1/1/1900")}
         renderInput={(params) => (
-          <FormControl {...props} sx={formStyle}>
+          <FormControl {...props} sx={{ ...formStyle, marginBottom: "20px" }}>
             <Typography
               variant="h5"
               sx={{ marginBottom: "20px", ...responsiveTypography }}

@@ -9,6 +9,7 @@ const parseDataToSchema = (data: DataType) => {
   data.forEach((item) => {
     let schema;
 
+    //For item.type we create schemas
     switch (item.type) {
       case "text": {
         schema = yup
@@ -54,7 +55,7 @@ const parseDataToSchema = (data: DataType) => {
       default:
         return;
     }
-
+    //We set the schema to the schemas object
     if (item.name && schema) dataSchemas[item.name] = schema;
   });
 
