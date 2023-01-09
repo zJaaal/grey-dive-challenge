@@ -2,8 +2,12 @@ import { FormControl, FormHelperText, SxProps, TextField, Typography } from "@mu
 import React, { RefObject, useContext, useState } from "react";
 import { ValidationContext } from "../../../../context/validation/ValidationContext";
 import { responsiveTypography } from "../../../../theme/mainTheme";
+import { formStyle, inputStyle } from "./sxProps";
 import { TextInputProps } from "./types";
 
+/**
+ * @description This components creates a custom text input that accepts all needed props and also exposes a ref
+ */
 const TextInput = React.forwardRef<RefObject<HTMLInputElement>, TextInputProps>((props, ref) => {
   const { handleFormValueChange, formErrors } = useContext(ValidationContext);
 
@@ -13,23 +17,8 @@ const TextInput = React.forwardRef<RefObject<HTMLInputElement>, TextInputProps>(
     handleFormValueChange(props.name!, value);
   };
 
-  let inputStyle: SxProps = {
-    height: "24px",
-    width: "100%",
-    fontColor: "white",
-  };
-
-  let formStyle: SxProps = {
-    width: "100%",
-    display: "flex",
-    alignItems: "start",
-    justifyContent: "center",
-    flexDirection: "column",
-    marginBottom: "20px",
-  };
-
   return (
-    <FormControl {...props} sx={formStyle}>
+    <FormControl {...props} sx={{ ...formStyle, marginBottom: "20px" }}>
       <Typography variant="h5" sx={{ marginBottom: "20px", ...responsiveTypography }} gutterBottom>
         {props.label} <span style={{ color: "red" }}>*</span>
       </Typography>
