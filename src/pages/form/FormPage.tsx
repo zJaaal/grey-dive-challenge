@@ -10,23 +10,23 @@ import { InputComponents } from "./utils";
 const FormPage = () => {
   const { formValues, validateFormValue, loading, saveAnswers } = useContext(ValidationContext);
 
+  //FormPage states
   const [pointer, setPointer] = useState(-1);
   const [item, setItem] = useState<InputType | SelectType>();
   const [Input, setInput] = useState<any>();
   const [prev, setPrev] = useState(0);
 
-  useEffect(() => {
-    if (pointer > 0) setPointer(-1);
-  }, []);
-
+  //When pointer changes we get the item from the data
   useEffect(() => {
     if (pointer >= 0 && pointer < data.length) setItem(data[pointer]);
   }, [pointer]);
 
+  //Then when the item changes whe get the input from the InputComponents Object
   useEffect(() => {
     setInput(InputComponents[item?.type || ""]);
   }, [item]);
 
+  //Increment handler that validates if the current input has a valid value before we advance
   const handleIncrement = () => {
     if (pointer < 0) setPointer((prev) => ++prev);
 
@@ -37,6 +37,8 @@ const FormPage = () => {
         return ++prev;
       });
   };
+
+  //Decrement handler
   const handleDecrement = () => {
     setPointer((prev) => {
       setPrev(prev);
@@ -45,6 +47,7 @@ const FormPage = () => {
     });
   };
 
+  //Here we handle the submit and reset the pointer if we want to go the start
   const handleSubmit = () => {
     saveAnswers().then((result: boolean) => {
       if (result) {
@@ -65,6 +68,7 @@ const FormPage = () => {
       }}
       className="background"
     >
+      {/* Progress Bar */}
       {pointer >= 0 && (
         <ProgressBar
           value={pointer + 1}
@@ -72,6 +76,8 @@ const FormPage = () => {
           max={data.length + 1}
         />
       )}
+
+      {/* Welcome Card */}
       {pointer < 0 && (
         <FadeIn
           keyTrigger={pointer}
@@ -86,6 +92,8 @@ const FormPage = () => {
           <WelcomeCard callback={handleIncrement} />
         </FadeIn>
       )}
+
+      {/* Here we show the current input */}
       {pointer >= 0 && Input && pointer != data.length && (
         <ItemContainer
           Item={() => (
@@ -116,6 +124,12 @@ const FormPage = () => {
           )}
         />
       )}
+      {/* When we get to the last component
+      we show
+      the last important item,
+      the checkboxes (if there are more than the terms and conditions)
+      and the submit button
+      */}
       {pointer == data.length && (
         <ItemContainer
           Item={() => (
