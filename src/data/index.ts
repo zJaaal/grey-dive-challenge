@@ -9,10 +9,17 @@ export const lastComponent: DataType = jsonData.items.slice(
   jsonData.items.length - 1
 );
 
+//Data without lastComponent
 export const data: DataType = jsonData.items.slice(0, lastItemIndex);
+
+//Data without changes
 export const rawData: DataType = jsonData.items;
 
+//Submit button
 export const submitData = rawData[rawData.length - 1];
+
+//Types
+
 export type DataType = (InputType | SelectType)[];
 export type InputType = {
   name?: string;
