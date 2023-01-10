@@ -5,7 +5,6 @@ import { WelcomeCardProps } from "./types";
 const WelcomeCard: FC<WelcomeCardProps> = ({ callback }) => {
   return (
     <Card
-      className="glass"
       sx={{
         width: { xs: "90%", sm: "70%", md: "50%" },
         height: 300,

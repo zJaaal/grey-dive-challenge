@@ -66,4 +66,4 @@ async function getAnswers(): Promise<FirebaseResponse> {
   }
 }
 
-export { db, saveOnDatabase, getAnswers as getResponses };
+export { db, saveOnDatabase, getAnswers };

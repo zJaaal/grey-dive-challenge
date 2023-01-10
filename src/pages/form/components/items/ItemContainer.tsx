@@ -8,7 +8,6 @@ import { ItemContainerProps } from "./types";
 const ItemContainer: FC<ItemContainerProps> = ({ Item, Action }) => {
   return (
     <Card
-      className="glass"
       sx={{
         width: { xs: "90%", sm: "70%", md: "50%" },
         height: 300,

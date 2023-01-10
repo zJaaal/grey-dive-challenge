@@ -5,7 +5,7 @@ import { GridColDef, GridRowsProp } from "@mui/x-data-grid/models";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { getResponses } from "../../firebase";
+import { getAnswers } from "../../firebase";
 import FadeIn from "../form/components/animate/FadeIn";
 
 const AnswersPage = () => {
@@ -28,7 +28,7 @@ const AnswersPage = () => {
   //Handling request to database
   useEffect(() => {
     setLoading(true);
-    getResponses()
+    getAnswers()
       .then((result) => {
         //Just set the data if the component is mounted
         if (isMounted.current) {
