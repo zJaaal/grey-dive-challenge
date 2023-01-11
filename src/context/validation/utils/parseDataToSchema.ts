@@ -42,7 +42,7 @@ const parseDataToSchema = (data: DataType) => {
           .date()
           .typeError("Este campo es requerido")
           .required("Este campo es requerido")
-          .min(new Date("1/1/1900"), "Por favor, ingresa una fecha valida")
+          .min(new Date("1/1/1900"), "Por favor, ingrese una fecha valida")
           .max(new Date(), "Por favor, ingrese una fecha valida");
         break;
       }
